@@ -1,0 +1,17 @@
+{
+  "name": "savnac-utils",
+  "version": "1.0.0",
+  "description": "savnac utility functions",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ventinus/savnac-utils.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ventinus/savnac-utils/issues"
+  },
+  "homepage": "https://github.com/ventinus/savnac-utils#readme"
+}
