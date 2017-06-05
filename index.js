@@ -316,6 +316,8 @@ export const findParentElement = (startElement, targetSelector) => {
   return findParentElement(parentElement, targetSelector);
 }
 
+// export const isNestedElement = (selector, nestedTarget) => {}
+
 /**
  * Checks browser and returns true is IE 11
  *
