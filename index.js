@@ -316,13 +316,21 @@ export const findParentElement = (startElement, targetSelector) => {
   return findParentElement(parentElement, targetSelector);
 }
 
+/**
+ * Using the selector, drills down through all the children to check if nestedTarget is
+ * a child of the selector. Useful for layerd click events.
+ *
+ * @param  {DOM Element} selector     'parent element' to start search from
+ * @param  {DOM Element} nestedTarget element to search for under selector
+ * @return {Boolean}                  result of if nestedTarget is a child or not
+ */
 // export const isNestedElement = (selector, nestedTarget) => {}
 
 /**
  * Checks browser and returns true is IE 11
  *
  * @return {Boolean}
- */
+
 export const isIE11 = () => {
   return !(window.ActiveXObject) && "ActiveXObject" in window ? true : false;
 }
