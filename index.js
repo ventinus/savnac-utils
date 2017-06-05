@@ -461,12 +461,17 @@ export const supportsPassive = () => {
  * Takes an object and a string of the key to remove from the object, returning a new object.
  * Similar to lodash omit but only shallow and doesnt accept an array of keys to omit (yet).
  *
- * @param  {Object} obj The object to remove key from
- * @param  {String} key The key to remove
- * @return {Object}     The original object without the key that was removed
+ * @param  {Object}          obj The object to remove key from
+ * @param  {String or Array} key The key(s) to remove
+ * @return {Object}              The original object without the key that was removed
  */
 export const omit = (obj = {}, key) => {
+  const isArray = Array.isArray(key)
   return Object.keys(obj).reduce((acc, cur) => {
-    return cur === key ? acc : Object.assign({}, acc, {[cur]: obj[cur]})
+    if (isArray && key.includes(cur) || cur === key) {
+      return acc
+    } else {
+      return Object.assign({}, acc, {[cur]: obj[cur]})
+    }
   }, {})
 }
