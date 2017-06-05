@@ -330,7 +330,7 @@ export const findParentElement = (startElement, targetSelector) => {
  * Checks browser and returns true is IE 11
  *
  * @return {Boolean}
-
+ */
 export const isIE11 = () => {
   return !(window.ActiveXObject) && "ActiveXObject" in window ? true : false;
 }
