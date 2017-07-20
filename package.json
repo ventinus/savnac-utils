@@ -1,9 +1,13 @@
 {
   "name": "savnac-utils",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "savnac utility functions",
-  "main": "index.js",
-  "scripts": {},
+  "main": "build/savnac-utils.js",
+  "module": "index",
+  "jsnext:main": "index",
+  "scripts": {
+    "build": "rm -rf build bundle.js && mkdir build && rollup -c && rollup -f umd -o build/savnac-utils.js -- bundle.js && rm bundle.js && uglifyjs build/savnac-utils.js -c -m -o build/savnac-utils.min.js "
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ventinus/savnac-utils.git"
@@ -13,5 +17,13 @@
   "bugs": {
     "url": "https://github.com/ventinus/savnac-utils/issues"
   },
-  "homepage": "https://github.com/ventinus/savnac-utils#readme"
+  "homepage": "https://github.com/ventinus/savnac-utils#readme",
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-latest": "^6.24.1",
+    "rollup": "0.41",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "uglify-js": "^2.8.11"
+  }
 }
