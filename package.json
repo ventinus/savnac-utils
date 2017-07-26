@@ -6,8 +6,7 @@
   "module": "index",
   "jsnext:main": "index",
   "scripts": {
-    "build": "rm -rf build bundle.js && mkdir build && rollup -c && rollup -f umd -o build/savnac-utils.js -- bundle.js && rm bundle.js && uglifyjs build/savnac-utils.js -c -m -o build/savnac-utils.min.js",
-    "postinstall": "yarn run build"
+    "build": "rm -rf build bundle.js && mkdir build && rollup -c && rollup -f umd -o build/savnac-utils.js -- bundle.js && rm bundle.js && uglifyjs build/savnac-utils.js -c -m -o build/savnac-utils.min.js"
   },
   "repository": {
     "type": "git",
@@ -19,7 +18,7 @@
     "url": "https://github.com/ventinus/savnac-utils/issues"
   },
   "homepage": "https://github.com/ventinus/savnac-utils#readme",
-  "dependencies": {
+  "devDependencies": {
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
     "rollup": "0.41",
