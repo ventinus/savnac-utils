@@ -1,6 +1,6 @@
 {
   "name": "savnac-utils",
-  "version": "1.1.15",
+  "version": "1.1.17",
   "description": "savnac utility functions",
   "main": "build/savnac-utils.js",
   "module": "index",
