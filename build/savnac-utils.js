@@ -187,6 +187,82 @@ var elementIndex = function elementIndex(els, element) {
 };
 
 /**
+ * Returns a function, that, as long as it continues to be invoked, will not
+ * be triggered.
+ * Source: https://davidwalsh.name/javascript-debounce-function (also Underscore.js)
+ *
+ * @param  {Function} func Function to execute once from a repeated event
+ * @param  {Number} wait Triggers the function after N milliseconds
+ * @param  {Boolean} immmediate If true, triggers the function on the leading edge instead of the trailing
+ * @return {Function}
+ */
+var debounce = function debounce(func, wait, immediate) {
+  var timeout = void 0;
+  return function () {
+    var context = this,
+        args = arguments;
+    var later = function later() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};
+
+/**
+ * Limits the rate of executions for a recurring event.
+ * Returns a function, that, when invoked, will only be
+ * triggered at most once during a given window of time.
+ * Normally, the throttled function will run as much as
+ * it can, without ever going more than once per wait
+ * duration; but if you’d like to disable the execution
+ * on the leading edge, pass {leading: false}. To disable
+ * execution on the trailing edge, ditto.
+ * Source: http://underscorejs.org/docs/underscore.html
+ *
+ * @param  {Function} func  Function to execute
+ * @param  {Number} wait    Time between executions
+ * @param  {Object} options Options to pass to the throttle function
+ * @return {Function}       Throttled function
+ */
+var throttle = function throttle(func, wait, options) {
+  var context = void 0,
+      args = void 0,
+      result = void 0;
+  var timeout = null;
+  var previous = 0;
+  if (!options) options = {};
+  var later = function later() {
+    previous = options.leading === false ? 0 : _now();
+    timeout = null;
+    result = func.apply(context, args);
+    if (!timeout) context = args = null;
+  };
+  return function () {
+    var now = _now();
+    if (!previous && options.leading === false) previous = now;
+    var remaining = wait - (now - previous);
+    context = this;
+    args = arguments;
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      previous = now;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining);
+    }
+    return result;
+  };
+};
+
+/**
  * Determines the correct event that corresponds with CSS transitionend or animationend.
  * The argument can only be 'transition' or 'animation'. Returns false if none found.
  *
@@ -463,6 +539,8 @@ exports.removeClass = removeClass;
 exports.toggleClass = toggleClass;
 exports.checkForClass = checkForClass;
 exports.elementIndex = elementIndex;
+exports.debounce = debounce;
+exports.throttle = throttle;
 exports.getCssEndEvent = getCssEndEvent;
 exports.getCssPrefix = getCssPrefix;
 exports.findParentElement = findParentElement;
