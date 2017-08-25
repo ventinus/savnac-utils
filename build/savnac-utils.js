@@ -446,12 +446,14 @@ var controller = function controller()
     return;
   };
 
-  var disable = function disable() {
+  var disable = function disable(deep) {
     if (!props.isEnabled) return;
+
+    var action = deep ? 'destroy' : 'disable';
 
     for (var module in props.modules) {
       if (props.modules.hasOwnProperty(module)) {
-        props.modules[module].disable();
+        props.modules[module][action]();
       }
     }
 
@@ -471,6 +473,16 @@ var controller = function controller()
     return;
   };
 
+  var destroy = function destroy() {
+    disable(true);
+
+    for (var key in props) {
+      if (props.hasOwnProperty(key)) {
+        props[key] = null;
+      }
+    }
+  };
+
   var init = function init() {
     // options.onInit();
     enable();
@@ -482,6 +494,7 @@ var controller = function controller()
     // initWindowLoad,
     enable: enable,
     disable: disable,
+    destroy: destroy,
     modules: props.modules
     // modules: mergeModules
   };

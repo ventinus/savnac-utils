@@ -412,12 +412,14 @@ export const controller = (
     return;
   }
 
-  const disable = () => {
+  const disable = (deep) => {
     if (!props.isEnabled) return;
+
+    const action = deep ? 'destroy' : 'disable'
 
     for (let module in props.modules) {
       if (props.modules.hasOwnProperty(module)) {
-        props.modules[module].disable();
+        props.modules[module][action]();
       }
     }
 
@@ -437,6 +439,16 @@ export const controller = (
     return;
   }
 
+  const destroy = () => {
+    disable(true)
+
+    for (let key in props) {
+      if (props.hasOwnProperty(key)) {
+        props[key] = null
+      }
+    }
+  }
+
   const init = () => {
     // options.onInit();
     enable();
@@ -448,6 +460,7 @@ export const controller = (
     // initWindowLoad,
     enable,
     disable,
+    destroy,
     modules: props.modules
     // modules: mergeModules
   };
