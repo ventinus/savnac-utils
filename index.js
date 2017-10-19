@@ -498,3 +498,31 @@ export const omit = (obj = {}, key) => {
     }
   }, {})
 }
+
+/**
+ * Given a number, can calculate the type of time to the future. e.g. 30 days from now => fromNow(30).days()
+ *
+ * @param  {Number} future Amount to calculate from now
+ * @return {Date}   javascript date object
+ */
+export const fromNow = future => {
+  const today = new Date()
+
+  return {
+    years() {
+      return new Date(today.getFullYear() + future, today.getMonth(), today.getDate(), today.getHours(), today.getMinutes())
+    },
+    months() {
+      return new Date(today.getFullYear(), today.getMonth() + future, today.getDate(), today.getHours(), today.getMinutes())
+    },
+    days() {
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate() + future, today.getHours(), today.getMinutes())
+    },
+    hours() {
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours() + future, today.getMinutes())
+    },
+    minutes() {
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes() + future)
+    }
+  }
+}

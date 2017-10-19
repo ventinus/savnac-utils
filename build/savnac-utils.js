@@ -538,6 +538,34 @@ var omit = function omit() {
   }, {});
 };
 
+/**
+ * Given a number, can calculate the type of time to the future. e.g. 30 days from now => fromNow(30).days()
+ *
+ * @param  {Number} future Amount to calculate from now
+ * @return {Date}   javascript date object
+ */
+var fromNow = function fromNow(future) {
+  var today = new Date();
+
+  return {
+    years: function years() {
+      return new Date(today.getFullYear() + future, today.getMonth(), today.getDate(), today.getHours(), today.getMinutes());
+    },
+    months: function months() {
+      return new Date(today.getFullYear(), today.getMonth() + future, today.getDate(), today.getHours(), today.getMinutes());
+    },
+    days: function days() {
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate() + future, today.getHours(), today.getMinutes());
+    },
+    hours: function hours() {
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours() + future, today.getMinutes());
+    },
+    minutes: function minutes() {
+      return new Date(today.getFullYear(), today.getMonth(), today.getDate(), today.getHours(), today.getMinutes() + future);
+    }
+  };
+};
+
 exports.mobileRE = mobileRE;
 exports.forEach = forEach;
 exports.capitalizeFirstLetter = capitalizeFirstLetter;
@@ -562,5 +590,6 @@ exports.isAndroid = isAndroid;
 exports.controller = controller;
 exports.supportsPassive = supportsPassive;
 exports.omit = omit;
+exports.fromNow = fromNow;
 
 })));
