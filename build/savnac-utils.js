@@ -6,6 +6,8 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var lodash = require('lodash');
+
 // Local dependency functions and constants
 // ________________________________________________________
 var CONSTANTS = {
@@ -24,7 +26,7 @@ var capitalizeFirstLetter = function capitalizeFirstLetter(string) {
 
 // Consolidates looping over set of element to add or remove and event listener
 var addRemoveEvent = function addRemoveEvent(action, els, eventName, callback, options) {
-  forEach(els, function (el) {
+  lodash.forEach(els, function (el) {
     return el[action](eventName, callback, options);
   });
   return els;
@@ -32,7 +34,7 @@ var addRemoveEvent = function addRemoveEvent(action, els, eventName, callback, o
 
 // Consolidates looping over set of element to add or remove a class
 var addRemoveClass = function addRemoveClass(action, els, className) {
-  forEach(els, function (el) {
+  lodash.forEach(els, function (el) {
     return el.classList[action](className);
   });
 

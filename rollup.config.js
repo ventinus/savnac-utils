@@ -4,6 +4,7 @@ import babel from 'rollup-plugin-babel';
 export default {
   entry: 'index.js',
   format: 'cjs',
+  external: [ 'lodash' ],
   plugins: [
     resolve(),
     babel({

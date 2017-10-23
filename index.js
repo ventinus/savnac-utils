@@ -1,5 +1,7 @@
 // Local dependency functions and constants
 // ________________________________________________________
+import {forEach} from 'lodash'
+
 const CONSTANTS = {
   ADD: 'add',
   REMOVE: 'remove',
