@@ -9,21 +9,9 @@ const CONSTANTS = {
 
 export const mobileRE = /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i;
 
-export const forEach = (array, callback, scope) => {
-  const j = array.length
-  for (let i = 0; i < j; i++) {
-    callback.call(scope, array[i], i); // passes back stuff we need
-  }
-};
-
 // Accepts a string and returns it with the first letter capitalized
 export const capitalizeFirstLetter = (string) => {
   return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
-}
-
-// Gets the current timestamp
-export const _now = Date.now || function() {
-  return new Date().getTime();
 }
 
 // Consolidates looping over set of element to add or remove and event listener
@@ -152,79 +140,6 @@ export const elementIndex = (els, element) => {
   return -1;
   // return [...els].indexOf(element);
   // causes error in IE11: Object doesn't support property or method 'from'
-}
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered.
- * Source: https://davidwalsh.name/javascript-debounce-function (also Underscore.js)
- *
- * @param  {Function} func Function to execute once from a repeated event
- * @param  {Number} wait Triggers the function after N milliseconds
- * @param  {Boolean} immmediate If true, triggers the function on the leading edge instead of the trailing
- * @return {Function}
- */
-export const debounce = (func, wait, immediate) => {
-  let timeout;
-  return function() {
-    let context = this, args = arguments;
-    const later = () => {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    }
-    let callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  }
-}
-
-/**
- * Limits the rate of executions for a recurring event.
- * Returns a function, that, when invoked, will only be
- * triggered at most once during a given window of time.
- * Normally, the throttled function will run as much as
- * it can, without ever going more than once per wait
- * duration; but if you’d like to disable the execution
- * on the leading edge, pass {leading: false}. To disable
- * execution on the trailing edge, ditto.
- * Source: http://underscorejs.org/docs/underscore.html
- *
- * @param  {Function} func  Function to execute
- * @param  {Number} wait    Time between executions
- * @param  {Object} options Options to pass to the throttle function
- * @return {Function}       Throttled function
- */
-export const throttle = (func, wait, options) => {
-  let context, args, result;
-  let timeout = null;
-  let previous = 0;
-  if (!options) options = {};
-  const later = function() {
-    previous = options.leading === false ? 0 : _now();
-    timeout = null;
-    result = func.apply(context, args);
-    if (!timeout) context = args = null;
-  }
-  return function() {
-    let now = _now();
-    if (!previous && options.leading === false) previous = now;
-    let remaining = wait - (now - previous);
-    context = this;
-    args = arguments;
-    if (remaining <= 0 || remaining > wait) {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-      previous = now;
-      result = func.apply(context, args);
-      if (!timeout) context = args = null;
-    } else if (!timeout && options.trailing !== false) {
-      timeout = setTimeout(later, remaining);
-    }
-    return result;
-  }
 }
 
 /**
@@ -478,25 +393,6 @@ export const supportsPassive = () => {
   // create a throwaway element & event and (synchronously) test out our options
   document.addEventListener('test', function() {}, opts);
   return supportPassive;
-}
-
-/**
- * Takes an object and a string of the key to remove from the object, returning a new object.
- * Similar to lodash omit but only shallow and doesnt accept an array of keys to omit (yet).
- *
- * @param  {Object}          obj The object to remove key from
- * @param  {String or Array} key The key(s) to remove
- * @return {Object}              The original object without the key that was removed
- */
-export const omit = (obj = {}, key) => {
-  const isArray = Array.isArray(key)
-  return Object.keys(obj).reduce((acc, cur) => {
-    if (isArray && key.includes(cur) || cur === key) {
-      return acc
-    } else {
-      return Object.assign({}, acc, {[cur]: obj[cur]})
-    }
-  }, {})
 }
 
 /**

@@ -6,21 +6,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var defineProperty = function (obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-};
-
 // Local dependency functions and constants
 // ________________________________________________________
 var CONSTANTS = {
@@ -32,21 +17,9 @@ var CONSTANTS = {
 
 var mobileRE = /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i;
 
-var forEach = function forEach(array, callback, scope) {
-  var j = array.length;
-  for (var i = 0; i < j; i++) {
-    callback.call(scope, array[i], i); // passes back stuff we need
-  }
-};
-
 // Accepts a string and returns it with the first letter capitalized
 var capitalizeFirstLetter = function capitalizeFirstLetter(string) {
   return '' + string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-// Gets the current timestamp
-var _now = Date.now || function () {
-  return new Date().getTime();
 };
 
 // Consolidates looping over set of element to add or remove and event listener
@@ -184,82 +157,6 @@ var elementIndex = function elementIndex(els, element) {
   return -1;
   // return [...els].indexOf(element);
   // causes error in IE11: Object doesn't support property or method 'from'
-};
-
-/**
- * Returns a function, that, as long as it continues to be invoked, will not
- * be triggered.
- * Source: https://davidwalsh.name/javascript-debounce-function (also Underscore.js)
- *
- * @param  {Function} func Function to execute once from a repeated event
- * @param  {Number} wait Triggers the function after N milliseconds
- * @param  {Boolean} immmediate If true, triggers the function on the leading edge instead of the trailing
- * @return {Function}
- */
-var debounce = function debounce(func, wait, immediate) {
-  var timeout = void 0;
-  return function () {
-    var context = this,
-        args = arguments;
-    var later = function later() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    var callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
-
-/**
- * Limits the rate of executions for a recurring event.
- * Returns a function, that, when invoked, will only be
- * triggered at most once during a given window of time.
- * Normally, the throttled function will run as much as
- * it can, without ever going more than once per wait
- * duration; but if you’d like to disable the execution
- * on the leading edge, pass {leading: false}. To disable
- * execution on the trailing edge, ditto.
- * Source: http://underscorejs.org/docs/underscore.html
- *
- * @param  {Function} func  Function to execute
- * @param  {Number} wait    Time between executions
- * @param  {Object} options Options to pass to the throttle function
- * @return {Function}       Throttled function
- */
-var throttle = function throttle(func, wait, options) {
-  var context = void 0,
-      args = void 0,
-      result = void 0;
-  var timeout = null;
-  var previous = 0;
-  if (!options) options = {};
-  var later = function later() {
-    previous = options.leading === false ? 0 : _now();
-    timeout = null;
-    result = func.apply(context, args);
-    if (!timeout) context = args = null;
-  };
-  return function () {
-    var now = _now();
-    if (!previous && options.leading === false) previous = now;
-    var remaining = wait - (now - previous);
-    context = this;
-    args = arguments;
-    if (remaining <= 0 || remaining > wait) {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-      previous = now;
-      result = func.apply(context, args);
-      if (!timeout) context = args = null;
-    } else if (!timeout && options.trailing !== false) {
-      timeout = setTimeout(later, remaining);
-    }
-    return result;
-  };
 };
 
 /**
@@ -508,34 +405,12 @@ var controller = function controller()
 var supportsPassive = function supportsPassive() {
   var supportPassive = false;
   // create options object with a getter to see if its passive property is accessed
-  var opts = Object.defineProperty && Object.defineProperty({}, 'passive', { get: function get$$1() {
+  var opts = Object.defineProperty && Object.defineProperty({}, 'passive', { get: function get() {
       supportPassive = true;
     } });
   // create a throwaway element & event and (synchronously) test out our options
   document.addEventListener('test', function () {}, opts);
   return supportPassive;
-};
-
-/**
- * Takes an object and a string of the key to remove from the object, returning a new object.
- * Similar to lodash omit but only shallow and doesnt accept an array of keys to omit (yet).
- *
- * @param  {Object}          obj The object to remove key from
- * @param  {String or Array} key The key(s) to remove
- * @return {Object}              The original object without the key that was removed
- */
-var omit = function omit() {
-  var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var key = arguments[1];
-
-  var isArray = Array.isArray(key);
-  return Object.keys(obj).reduce(function (acc, cur) {
-    if (isArray && key.includes(cur) || cur === key) {
-      return acc;
-    } else {
-      return Object.assign({}, acc, defineProperty({}, cur, obj[cur]));
-    }
-  }, {});
 };
 
 /**
@@ -567,9 +442,7 @@ var fromNow = function fromNow(future) {
 };
 
 exports.mobileRE = mobileRE;
-exports.forEach = forEach;
 exports.capitalizeFirstLetter = capitalizeFirstLetter;
-exports._now = _now;
 exports.addRemoveEvent = addRemoveEvent;
 exports.addRemoveClass = addRemoveClass;
 exports.toggleSingleClass = toggleSingleClass;
@@ -580,8 +453,6 @@ exports.removeClass = removeClass;
 exports.toggleClass = toggleClass;
 exports.checkForClass = checkForClass;
 exports.elementIndex = elementIndex;
-exports.debounce = debounce;
-exports.throttle = throttle;
 exports.getCssEndEvent = getCssEndEvent;
 exports.getCssPrefix = getCssPrefix;
 exports.findParentElement = findParentElement;
@@ -589,7 +460,6 @@ exports.isIE11 = isIE11;
 exports.isAndroid = isAndroid;
 exports.controller = controller;
 exports.supportsPassive = supportsPassive;
-exports.omit = omit;
 exports.fromNow = fromNow;
 
 })));
