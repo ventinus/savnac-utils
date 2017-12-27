@@ -426,10 +426,10 @@ var controllerPack = function controllerPack() {
     window.APP = window.APP || {};
     combinedOpts.onStart();
 
-    for (var m in mods) {
-      if (!mods[m].init) mods[m] = mods[m]();
+    for (var m in modules) {
+      if (!modules[m].init) modules[m] = modules[m]();
 
-      mods[m].init();
+      modules[m].init();
     }
 
     combinedOpts.onComplete();
