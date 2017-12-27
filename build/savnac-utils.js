@@ -480,6 +480,15 @@ var fromNow = function fromNow(future) {
   };
 };
 
+/**
+ * Cross-browser method for getting the windowHeight
+ *
+ * @return {Number} Window height
+ */
+var getWindowHeight = function getWindowHeight() {
+  return window.innerHeight || document.documentElement.clientHeight;
+};
+
 exports.mobileRE = mobileRE;
 exports.capitalizeFirstLetter = capitalizeFirstLetter;
 exports.addRemoveEvent = addRemoveEvent;
@@ -501,5 +510,6 @@ exports.controller = controller;
 exports.controllerPack = controllerPack;
 exports.supportsPassive = supportsPassive;
 exports.fromNow = fromNow;
+exports.getWindowHeight = getWindowHeight;
 
 })));
