@@ -400,6 +400,43 @@ var controller = function controller()
 };
 
 /**
+ * Default option values for `controllerPack`
+ * @type {Object}
+ */
+var defaultControllerPackOpts = {
+  onStart: function onStart() {},
+  onComplete: function onComplete() {}
+};
+
+/**
+ * A simpler implementation of `controller`. Designed to be used with rails webpacker
+ * 'packs' to act as a pages' controller. First function return is meant to be
+ * passed to the `DOMContentLoaded` callback
+ *
+ * @param  {Object} modules Page modules to run
+ * @param  {Object} opts    Provides access to various parts of the lifecycle
+ * @return {undefined}
+ */
+var controllerPack = function controllerPack() {
+  var modules = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return function () {
+    var combinedOpts = Object.assign({}, defaultControllerPackOpts, opts);
+
+    window.APP = window.APP || {};
+    combinedOpts.onStart();
+
+    for (var m in mods) {
+      if (!mods[m].init) mods[m] = mods[m]();
+
+      mods[m].init();
+    }
+
+    combinedOpts.onComplete();
+  };
+};
+
+/**
  * Checks if the browser event listener supports the passive option, a newer feature
  *
  * @return {Boolean}
@@ -461,6 +498,7 @@ exports.findParentElement = findParentElement;
 exports.isIE11 = isIE11;
 exports.isAndroid = isAndroid;
 exports.controller = controller;
+exports.controllerPack = controllerPack;
 exports.supportsPassive = supportsPassive;
 exports.fromNow = fromNow;
 

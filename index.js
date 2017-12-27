@@ -383,6 +383,43 @@ export const controller = (
   };
 }
 
+
+/**
+ * Default option values for `controllerPack`
+ * @type {Object}
+ */
+const defaultControllerPackOpts = {
+  onStart() {},
+  onComplete() {}
+}
+
+/**
+ * A simpler implementation of `controller`. Designed to be used with rails webpacker
+ * 'packs' to act as a pages' controller. First function return is meant to be
+ * passed to the `DOMContentLoaded` callback
+ *
+ * @param  {Object} modules Page modules to run
+ * @param  {Object} opts    Provides access to various parts of the lifecycle
+ * @return {undefined}
+ */
+export const controllerPack = (modules = {}, opts = {}) => () => {
+  const combinedOpts = Object.assign({},
+    defaultControllerPackOpts,
+    opts
+  )
+
+  window.APP = window.APP || {}
+  combinedOpts.onStart()
+
+  for (let m in mods) {
+    if (!mods[m].init) mods[m] = mods[m]()
+
+    mods[m].init()
+  }
+
+  combinedOpts.onComplete()
+}
+
 /**
  * Checks if the browser event listener supports the passive option, a newer feature
  *
@@ -424,3 +461,10 @@ export const fromNow = future => {
     }
   }
 }
+
+/**
+ * Cross-browser method for getting the windowHeight
+ *
+ * @return {Number} Window height
+ */
+export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight
