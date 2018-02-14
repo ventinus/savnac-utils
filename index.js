@@ -468,3 +468,21 @@ export const fromNow = future => {
  * @return {Number} Window height
  */
 export const getWindowHeight = () => window.innerHeight || document.documentElement.clientHeight
+
+/**
+ * @param {String} HTML representing a single element
+ * @return {Element}
+ */
+export const htmlToElement = (html) => {
+  const template = document.createElement('div')
+  html = html.trim() // Never return a text node of whitespace as the result
+  template.innerHTML = html
+  return template.children[0]
+}
+
+/**
+ * Empties the parent of all children
+ * @param  {Element} parent
+ * @return {undefined}
+ */
+export const empty = parent => forEach(parent.children, c => parent.removeChild(parent.children[0]))

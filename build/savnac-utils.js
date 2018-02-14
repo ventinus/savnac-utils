@@ -489,6 +489,28 @@ var getWindowHeight = function getWindowHeight() {
   return window.innerHeight || document.documentElement.clientHeight;
 };
 
+/**
+ * @param {String} HTML representing a single element
+ * @return {Element}
+ */
+var htmlToElement = function htmlToElement(html) {
+  var template = document.createElement('div');
+  html = html.trim(); // Never return a text node of whitespace as the result
+  template.innerHTML = html;
+  return template.children[0];
+};
+
+/**
+ * Empties the parent of all children
+ * @param  {Element} parent
+ * @return {undefined}
+ */
+var empty = function empty(parent) {
+  return lodash.forEach(parent.children, function (c) {
+    return parent.removeChild(parent.children[0]);
+  });
+};
+
 exports.mobileRE = mobileRE;
 exports.capitalizeFirstLetter = capitalizeFirstLetter;
 exports.addRemoveEvent = addRemoveEvent;
@@ -511,5 +533,7 @@ exports.controllerPack = controllerPack;
 exports.supportsPassive = supportsPassive;
 exports.fromNow = fromNow;
 exports.getWindowHeight = getWindowHeight;
+exports.htmlToElement = htmlToElement;
+exports.empty = empty;
 
 })));
