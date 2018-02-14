@@ -463,6 +463,22 @@ export const fromNow = future => {
 }
 
 /**
+ * Given a number, converts it to milliseconds based on the unit of the subsequent object key access.
+ * e.g. 5 days in milliseconds => timeInMs(5).days
+ *
+ * @param  {Number}   amount   Number to convert to milliseconds
+ * @return {Object}            Contains the values of the converted number in different measurements
+ */
+export const timeInMs = (amount = 1) => ({
+  years: amount * 1000 * 60 * 60 * 24 * 365,
+  weeks: amount * 1000 * 60 * 60 * 24 * 7,
+  days: amount * 1000 * 60 * 60 * 24,
+  hours: amount * 1000 * 60 * 60,
+  minutes: amount * 1000 * 60,
+  seconds: amount * 1000
+})
+
+/**
  * Cross-browser method for getting the windowHeight
  *
  * @return {Number} Window height

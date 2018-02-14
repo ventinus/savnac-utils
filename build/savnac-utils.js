@@ -481,6 +481,25 @@ var fromNow = function fromNow(future) {
 };
 
 /**
+ * Given a number, converts it to milliseconds based on the unit of the subsequent object key access.
+ * e.g. 5 days in milliseconds => timeInMs(5).days
+ *
+ * @param  {Number}   amount   Number to convert to milliseconds
+ * @return {Object}            Contains the values of the converted number in different measurements
+ */
+var timeInMs = function timeInMs() {
+  var amount = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+  return {
+    years: amount * 1000 * 60 * 60 * 24 * 365,
+    weeks: amount * 1000 * 60 * 60 * 24 * 7,
+    days: amount * 1000 * 60 * 60 * 24,
+    hours: amount * 1000 * 60 * 60,
+    minutes: amount * 1000 * 60,
+    seconds: amount * 1000
+  };
+};
+
+/**
  * Cross-browser method for getting the windowHeight
  *
  * @return {Number} Window height
@@ -532,6 +551,7 @@ exports.controller = controller;
 exports.controllerPack = controllerPack;
 exports.supportsPassive = supportsPassive;
 exports.fromNow = fromNow;
+exports.timeInMs = timeInMs;
 exports.getWindowHeight = getWindowHeight;
 exports.htmlToElement = htmlToElement;
 exports.empty = empty;
