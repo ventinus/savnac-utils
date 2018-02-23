@@ -7,34 +7,34 @@ const CONSTANTS = {
   REMOVE: 'remove',
   ADD_EVENT_LISTENER: 'addEventListener',
   REMOVE_EVENT_LISTENER: 'removeEventListener'
-};
+}
 
-export const mobileRE = /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i;
+export const mobileRE = /Mobile|iP(hone|od|ad)|Android|BlackBerry|IEMobile|Kindle|NetFront|Silk-Accelerated|(hpw|web)OS|Fennec|Minimo|Opera M(obi|ini)|Blazer|Dolfin|Dolphin|Skyfire|Zune/i
 
 // Accepts a string and returns it with the first letter capitalized
 export const capitalizeFirstLetter = (string) => {
-  return `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+  return `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 }
 
 // Consolidates looping over set of element to add or remove and event listener
 export const addRemoveEvent = function(action, els, eventName, callback, options) {
   forEach(els, el => el[action](eventName, callback, options))
-  return els;
+  return els
 }
 
 // Consolidates looping over set of element to add or remove a class
 export const addRemoveClass = (action, els, className) => {
   forEach(els, el => el.classList[action](className))
 
-  return els;
+  return els
 }
 
 // Toggles the class or an element
 export const toggleSingleClass = (el, className) => {
-  let { ADD, REMOVE } = CONSTANTS;
-  let action = el.classList.contains(className) ? REMOVE : ADD;
-  el.classList[action](className);
-  return el;
+  let { ADD, REMOVE } = CONSTANTS
+  let action = el.classList.contains(className) ? REMOVE : ADD
+  el.classList[action](className)
+  return el
 }
 
 
@@ -53,7 +53,7 @@ export const toggleSingleClass = (el, className) => {
  * @return {DOM Elements}
  */
 export const addEvent = (els, eventName, callback, options = {}) => {
-  return addRemoveEvent(CONSTANTS.ADD_EVENT_LISTENER, els, eventName, callback, options);
+  return addRemoveEvent(CONSTANTS.ADD_EVENT_LISTENER, els, eventName, callback, options)
 }
 
 /**
@@ -67,7 +67,7 @@ export const addEvent = (els, eventName, callback, options = {}) => {
  * @return {DOM Elements}
  */
 export const removeEvent = (els, eventName, callback, options = {}) => {
-  return addRemoveEvent(CONSTANTS.REMOVE_EVENT_LISTENER, els, eventName, callback, options);
+  return addRemoveEvent(CONSTANTS.REMOVE_EVENT_LISTENER, els, eventName, callback, options)
 }
 
 /**
@@ -78,7 +78,7 @@ export const removeEvent = (els, eventName, callback, options = {}) => {
  * @return {DOM Elements}
  */
 export const addClass = (els, className) => {
-  return addRemoveClass(CONSTANTS.ADD, els, className);
+  return addRemoveClass(CONSTANTS.ADD, els, className)
 }
 
 /**
@@ -89,7 +89,7 @@ export const addClass = (els, className) => {
  * @return {DOM Elements}
  */
 export const removeClass = (els, className) => {
-  return addRemoveClass(CONSTANTS.REMOVE, els, className);
+  return addRemoveClass(CONSTANTS.REMOVE, els, className)
 }
 
 /**
@@ -101,14 +101,12 @@ export const removeClass = (els, className) => {
  */
 export const toggleClass = (els, className) => {
   if (!els.length) {
-    toggleSingleClass(els, className);
+    toggleSingleClass(els, className)
   } else {
-    for (let i = els.length - 1; i >= 0; i--) {
-      toggleSingleClass(els[i], className);
-    }
+    forEach(els, el => toggleSingleClass(el, className))
   }
 
-  return els;
+  return els
 }
 
 /**
@@ -120,10 +118,10 @@ export const toggleClass = (els, className) => {
  */
 export const checkForClass = (els, targetClass) => {
   for (let i = els.length - 1; i >= 0; i--) {
-    if (els[i].classList.contains(targetClass)) return true;
+    if (els[i].classList.contains(targetClass)) return true
   }
 
-  return false;
+  return false
 }
 
 /**
@@ -136,11 +134,11 @@ export const checkForClass = (els, targetClass) => {
  */
 export const elementIndex = (els, element) => {
   for (let i = els.length - 1; i >= 0; i--) {
-    if (els[i] === element) return i;
+    if (els[i] === element) return i
   }
 
-  return -1;
-  // return [...els].indexOf(element);
+  return -1
+  // return [...els].indexOf(element)
   // causes error in IE11: Object doesn't support property or method 'from'
 }
 
@@ -153,23 +151,23 @@ export const elementIndex = (els, element) => {
  */
 export const getCssEndEvent = (property) => {
   if (property !== 'transition' && property !== 'animation')
-    throw new Error('Property needs to be either transtion or animation');
+    throw new Error('Property needs to be either transtion or animation')
 
-  let o;
-  let el = document.createElement('fakeelement');
-  let options = {};
-  let capitalizedProperty = capitalizeFirstLetter(property);
-  options[`${property}`] = `${property}end`;
-  options[`O${capitalizedProperty}`] = `o${capitalizedProperty}End`;
-  options[`${capitalizedProperty}`] = `${property}end`;
-  options[`${capitalizedProperty}`] = `webkit${capitalizedProperty}End`;
+  let o
+  let el = document.createElement('fakeelement')
+  let options = {}
+  let capitalizedProperty = capitalizeFirstLetter(property)
+  options[`${property}`] = `${property}end`
+  options[`O${capitalizedProperty}`] = `o${capitalizedProperty}End`
+  options[`${capitalizedProperty}`] = `${property}end`
+  options[`${capitalizedProperty}`] = `webkit${capitalizedProperty}End`
 
   for (o in options) {
     if (options.hasOwnProperty(o) && el.style[o] !== undefined) {
-      return options[o];
+      return options[o]
     }
   }
-  return false;
+  return false
 }
 
 /**
@@ -184,21 +182,21 @@ export const getCssPrefix = (property) => {
   if (property !== 'transform')
     console.warn(`${property} has not been thoroughly tested. If correct, add to the list of verifieds.`)
 
-  let o;
-  let el = document.createElement('fakeelement');
-  let options = {};
-  let capitalizedProperty = capitalizeFirstLetter(property);
-  options[`${property}`] = `${property}`;
-  options[`O${capitalizedProperty}`] = `o${capitalizedProperty}`;
-  options[`${capitalizedProperty}`] = `${property}`;
-  options[`${capitalizedProperty}`] = `webkit${capitalizedProperty}`;
+  let o
+  let el = document.createElement('fakeelement')
+  let options = {}
+  let capitalizedProperty = capitalizeFirstLetter(property)
+  options[`${property}`] = `${property}`
+  options[`O${capitalizedProperty}`] = `o${capitalizedProperty}`
+  options[`${capitalizedProperty}`] = `${property}`
+  options[`${capitalizedProperty}`] = `webkit${capitalizedProperty}`
 
   for (o in options) {
     if (options.hasOwnProperty(o) && el.style[o] !== undefined) {
-      return options[o];
+      return options[o]
     }
   }
-  return false;
+  return false
 }
 
 /**
@@ -212,25 +210,30 @@ export const getCssPrefix = (property) => {
  * @return {DOM Element} Found parent element
  */
 export const findParentElement = (startElement, targetSelector) => {
-  let parentElement = startElement.parentElement;
-  let type = targetSelector.charAt(0);
-  let name = targetSelector.slice(1);
+  if (!startElement) {
+    console.warn('findParentElement was passed an undefined startElement')
+    return -1
+  }
+
+  const parentElement = startElement.parentElement
+  const type = targetSelector.charAt(0)
+  const name = targetSelector.slice(1)
 
   if (type !== '#' && type !== '.') {
-    throw new Error('targetSelector needs to start with a "#" or "."');
+    throw new Error('targetSelector needs to start with a "#" or "."')
   }
 
   if (!parentElement) {
-    return -1;
+    return -1
   } else {
     if (type === '#' && parentElement.id === name) {
-      return parentElement;
+      return parentElement
     } else if (type === '.' && parentElement.classList.contains(name)) {
-      return parentElement;
+      return parentElement
     }
   }
 
-  return findParentElement(parentElement, targetSelector);
+  return findParentElement(parentElement, targetSelector)
 }
 
 /**
@@ -249,7 +252,7 @@ export const findParentElement = (startElement, targetSelector) => {
  * @return {Boolean}
  */
 export const isIE11 = () => {
-  return !(window.ActiveXObject) && "ActiveXObject" in window ? true : false;
+  return !(window.ActiveXObject) && "ActiveXObject" in window ? true : false
 }
 
 /**
@@ -258,7 +261,7 @@ export const isIE11 = () => {
  * @return {Boolean}
  */
 export const isAndroid = () => {
-  return navigator.userAgent.match(/Android/i) ? true : false;
+  return navigator.userAgent.match(/Android/i) ? true : false
 }
 
 /**
@@ -282,7 +285,7 @@ export const controller = (
     // isWindowLoadEnabled: false,
     modules: modules,
     // windowLoadModules: windowLoadModules
-  };
+  }
 
   // Verify options are passed correctly and combine with default options
   // options = Object.assign({}, {
@@ -291,69 +294,69 @@ export const controller = (
   //   onWindowLoadInit: () => {},
   //   onEnable: () => {},
   //   onDisable: () => {}
-  // }, options);
+  // }, options)
 
-  // options.onCreation();
+  // options.onCreation()
 
-  // const mergeModules = () => { return Object.assign({}, props.modules, props.windowLoadModules); }
+  // const mergeModules = () => { return Object.assign({}, props.modules, props.windowLoadModules) }
 
   const initModuleSet = (moduleGroup) => {
     for (let module in props[moduleGroup]) {
       if (props[moduleGroup].hasOwnProperty(module)) {
         // check if module is a function which means it hasn't been created
         // since modules return an object, they become objects with methods
-        if (!props[moduleGroup][module].init) props[moduleGroup][module] = props[moduleGroup][module]();
-        props[moduleGroup][module].init();
+        if (!props[moduleGroup][module].init) props[moduleGroup][module] = props[moduleGroup][module]()
+        props[moduleGroup][module].init()
       }
     }
 
-    return;
+    return
   }
 
   // const initWindowLoad = () => {
-  //   initModuleSet('windowLoadModules');
-  //   options.onWindowLoadInit();
-  //   props.isWindowLoadEnabled = true;
-  //   return;
+  //   initModuleSet('windowLoadModules')
+  //   options.onWindowLoadInit()
+  //   props.isWindowLoadEnabled = true
+  //   return
   // }
 
   const enable = () => {
-    if (props.isEnabled) return;
+    if (props.isEnabled) return
 
-    initModuleSet('modules');
+    initModuleSet('modules')
 
-    // options.onEnable();
+    // options.onEnable()
 
-    props.isEnabled = true;
+    props.isEnabled = true
 
-    return;
+    return
   }
 
   const disable = (deep) => {
-    if (!props.isEnabled) return;
+    if (!props.isEnabled) return
 
     const action = deep ? 'destroy' : 'disable'
 
     for (let module in props.modules) {
       if (props.modules.hasOwnProperty(module)) {
-        props.modules[module][action]();
+        props.modules[module][action]()
       }
     }
 
     // if (props.isWindowLoadEnabled) {
     //   for (let module in props.windowLoadModules) {
     //     if (props.windowLoadModules.hasOwnProperty(module)) {
-    //       props.windowLoadModules[module].disable();
+    //       props.windowLoadModules[module].disable()
     //     }
     //   }
     // }
 
-    // options.onDisable();
+    // options.onDisable()
 
-    props.isEnabled = false;
-    // props.isWindowLoadEnabled = false;
+    props.isEnabled = false
+    // props.isWindowLoadEnabled = false
 
-    return;
+    return
   }
 
   const destroy = () => {
@@ -367,9 +370,9 @@ export const controller = (
   }
 
   const init = () => {
-    // options.onInit();
-    enable();
-    return;
+    // options.onInit()
+    enable()
+    return
   }
 
   return {
@@ -380,7 +383,7 @@ export const controller = (
     destroy,
     modules: props.modules
     // modules: mergeModules
-  };
+  }
 }
 
 
@@ -426,12 +429,12 @@ export const controllerPack = (modules = {}, opts = {}) => () => {
  * @return {Boolean}
  */
 export const supportsPassive = () => {
-  let supportPassive = false;
+  let supportPassive = false
   // create options object with a getter to see if its passive property is accessed
-  let opts = Object.defineProperty && Object.defineProperty({}, 'passive', { get: function(){ supportPassive = true }});
+  let opts = Object.defineProperty && Object.defineProperty({}, 'passive', { get: function(){ supportPassive = true }})
   // create a throwaway element & event and (synchronously) test out our options
-  document.addEventListener('test', function() {}, opts);
-  return supportPassive;
+  document.addEventListener('test', function() {}, opts)
+  return supportPassive
 }
 
 /**
@@ -501,4 +504,10 @@ export const htmlToElement = (html) => {
  * @param  {Element} parent
  * @return {undefined}
  */
-export const empty = parent => forEach(parent.children, c => parent.removeChild(parent.children[0]))
+export const empty = parent => {
+  if (!parent) {
+    console.warn('empty function was passed an undefined element')
+    return
+  }
+  forEach(parent.children, c => parent.removeChild(parent.children[0]))
+}

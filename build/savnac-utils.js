@@ -120,9 +120,9 @@ var toggleClass = function toggleClass(els, className) {
   if (!els.length) {
     toggleSingleClass(els, className);
   } else {
-    for (var i = els.length - 1; i >= 0; i--) {
-      toggleSingleClass(els[i], className);
-    }
+    lodash.forEach(els, function (el) {
+      return toggleSingleClass(el, className);
+    });
   }
 
   return els;
@@ -157,7 +157,7 @@ var elementIndex = function elementIndex(els, element) {
   }
 
   return -1;
-  // return [...els].indexOf(element);
+  // return [...els].indexOf(element)
   // causes error in IE11: Object doesn't support property or method 'from'
 };
 
@@ -227,6 +227,11 @@ var getCssPrefix = function getCssPrefix(property) {
  * @return {DOM Element} Found parent element
  */
 var findParentElement = function findParentElement(startElement, targetSelector) {
+  if (!startElement) {
+    console.warn('findParentElement was passed an undefined startElement');
+    return -1;
+  }
+
   var parentElement = startElement.parentElement;
   var type = targetSelector.charAt(0);
   var name = targetSelector.slice(1);
@@ -298,22 +303,22 @@ var controller = function controller()
     // isWindowLoadEnabled: false,
     modules: modules
     // windowLoadModules: windowLoadModules
-  };
 
-  // Verify options are passed correctly and combine with default options
-  // options = Object.assign({}, {
-  //   onCreation: () => {},
-  //   onInit: () => {},
-  //   onWindowLoadInit: () => {},
-  //   onEnable: () => {},
-  //   onDisable: () => {}
-  // }, options);
 
-  // options.onCreation();
+    // Verify options are passed correctly and combine with default options
+    // options = Object.assign({}, {
+    //   onCreation: () => {},
+    //   onInit: () => {},
+    //   onWindowLoadInit: () => {},
+    //   onEnable: () => {},
+    //   onDisable: () => {}
+    // }, options)
 
-  // const mergeModules = () => { return Object.assign({}, props.modules, props.windowLoadModules); }
+    // options.onCreation()
 
-  var initModuleSet = function initModuleSet(moduleGroup) {
+    // const mergeModules = () => { return Object.assign({}, props.modules, props.windowLoadModules) }
+
+  };var initModuleSet = function initModuleSet(moduleGroup) {
     for (var module in props[moduleGroup]) {
       if (props[moduleGroup].hasOwnProperty(module)) {
         // check if module is a function which means it hasn't been created
@@ -327,10 +332,10 @@ var controller = function controller()
   };
 
   // const initWindowLoad = () => {
-  //   initModuleSet('windowLoadModules');
-  //   options.onWindowLoadInit();
-  //   props.isWindowLoadEnabled = true;
-  //   return;
+  //   initModuleSet('windowLoadModules')
+  //   options.onWindowLoadInit()
+  //   props.isWindowLoadEnabled = true
+  //   return
   // }
 
   var enable = function enable() {
@@ -338,7 +343,7 @@ var controller = function controller()
 
     initModuleSet('modules');
 
-    // options.onEnable();
+    // options.onEnable()
 
     props.isEnabled = true;
 
@@ -359,15 +364,15 @@ var controller = function controller()
     // if (props.isWindowLoadEnabled) {
     //   for (let module in props.windowLoadModules) {
     //     if (props.windowLoadModules.hasOwnProperty(module)) {
-    //       props.windowLoadModules[module].disable();
+    //       props.windowLoadModules[module].disable()
     //     }
     //   }
     // }
 
-    // options.onDisable();
+    // options.onDisable()
 
     props.isEnabled = false;
-    // props.isWindowLoadEnabled = false;
+    // props.isWindowLoadEnabled = false
 
     return;
   };
@@ -383,7 +388,7 @@ var controller = function controller()
   };
 
   var init = function init() {
-    // options.onInit();
+    // options.onInit()
     enable();
     return;
   };
@@ -525,7 +530,11 @@ var htmlToElement = function htmlToElement(html) {
  * @return {undefined}
  */
 var empty = function empty(parent) {
-  return lodash.forEach(parent.children, function (c) {
+  if (!parent) {
+    console.warn('empty function was passed an undefined element');
+    return;
+  }
+  lodash.forEach(parent.children, function (c) {
     return parent.removeChild(parent.children[0]);
   });
 };
